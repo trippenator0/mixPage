@@ -1,4 +1,5 @@
 ﻿using System;
+
 using System.Collections;
 using System.Net;
 using System.Net.Sockets;
@@ -12,7 +13,7 @@ namespace HelloWorld
         static public void usage()
         {
 
-            Console.WriteLine("Usage: hellomix1 [-m mcast] [-l local-ip]");
+            Console.WriteLine("Usage: pingback [-l local-ip]");
 
             Console.WriteLine(" [-r recieve] [-s destination] ");
 
@@ -220,7 +221,7 @@ namespace HelloWorld
 
                     udpSocket.Connect(destAddress, portNumber);
 
-                    Console.WriteLine("Connect() is OK...");
+                    Console.WriteLine("Connect() is O7K...");
 
                 }
 
@@ -287,8 +288,10 @@ namespace HelloWorld
                     {
 					
                       	Byte[]  receiveBuffer = udpSocket.Receive(ref senderEndPoint);
+
 					  	string recieveStr = System.Text.Encoding.Default.GetString(receiveBuffer);
 			            switch(senderEndPoint.ToString()) {
+
 						case "10.0.0.11":
 							machineName = "Term1 Hallway.";
 							break;
@@ -311,9 +314,9 @@ namespace HelloWorld
 							machineName = "Terminal Unknown.";
 							break;
 						}
+						DateTime dt = DateTime.UtcNow.ToLocalTime();
 
-
-						Console.WriteLine("Page from {0} message from {1} at {2} UTC",  machineName, recieveStr, DateTime.UtcNow);
+						Console.WriteLine("Page from {0} message from {1} at {2} UTC",  machineName, recieveStr, dt);
 
 
 
@@ -345,6 +348,7 @@ namespace HelloWorld
                     // Clean things up by dropping any multicast groups we joined
 
                    // Console.WriteLine("Cleaning things up by dropping any multicast groups we joined...");
+					Console.WriteLine("Successful, cleaning up..");
 
                     for (i = 0; i < multicastGroups.Count; i++)
                     {
@@ -377,7 +381,7 @@ namespace HelloWorld
 
                     // Free up the underlying network resources
 
-                    Console.WriteLine("Closing the socket...");
+                    Console.WriteLine("Sucess: Closing the socket.");
 
                     udpSocket.Close();
 
