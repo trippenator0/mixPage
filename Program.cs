@@ -240,7 +240,7 @@ namespace HelloWorld
 						}
 						DateTime dt = DateTime.UtcNow.ToLocalTime();
 
-						Console.WriteLine("Page from {0} message from {1} at {2} UTC",  machineName, recieveStr, dt);
+						Console.WriteLine("Page from {0} message from {1} at {2}",  machineName, recieveStr, dt);
 
 
 
