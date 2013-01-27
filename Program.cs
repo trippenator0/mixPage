@@ -1,5 +1,4 @@
 ﻿using System;
-
 using System.Collections;
 using System.Net;
 using System.Net.Sockets;
@@ -115,7 +114,7 @@ namespace HelloWorld
 
                                 usage();
 
-                                return;
+								return;
 
                         }
 
@@ -125,26 +124,17 @@ namespace HelloWorld
 
                 catch
                 {
-
                     //usage();
-
-                    return;
+					return;
 
                 }
 
             }
 
-            UdpClient udpSocket = null;
-
-
-           
-
+			UdpClient udpSocket = null;
 
             try
             {
-
-               
-
                 Console.WriteLine("creating null socket...");
 
                 if (udpSender == false)
@@ -190,7 +180,7 @@ namespace HelloWorld
 
                     udpSocket.Connect(destAddress, portNumber);
 
-                    Console.WriteLine("Connect() is O7K...");
+                    Console.WriteLine("Connect() is OK...");
 
                 }
 
@@ -233,7 +223,7 @@ namespace HelloWorld
 							break;
 						case "10.0.0.16":
 							machineName = "Term6.";
-							break;
+							break;	
 						default:
 							machineName = "Terminal Unknown.";
 							break;
@@ -285,7 +275,7 @@ namespace HelloWorld
                         else if (localAddress.AddressFamily == AddressFamily.InterNetworkV6)
                         {
 
-
+							 
                             udpSocket.DropMulticastGroup(
 
                                 (IPAddress)multicastGroups[i],
