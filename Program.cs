@@ -8,127 +8,92 @@ namespace HelloWorld
 {
     class Hello
     {
-
         static public void usage()
         {
-
-            Console.WriteLine("Usage: pingback [-l local-ip]");
-
-            Console.WriteLine(" [-r recieve] [-s destination] ");
-
+            Console.WriteLine("usage: pingback [-l local-ip]");
+			Console.WriteLine(" [-r to recieve] [-s destination] [(-f, -h) ");
             Console.WriteLine();
-
             Console.WriteLine("Available options:");
-
-            Console.WriteLine("     -l local-ip         Local IP address to bind to");
-
+			Console.WriteLine("     -l local-ip         Local IP address to bind to");
             Console.WriteLine("     -r                  Receive UDP data");
-
             Console.WriteLine("     -s destination      Send UDP data to given destination");
-
-            Console.WriteLine();
-
+			Console.WriteLine("     {-f,-h}             Request assistance at Front or Havana Respectively\n");
         }
         static void Main(string[] args)
         {
-            
             ArrayList multicastGroups = new ArrayList();
-
             IPAddress localAddress = IPAddress.Any, destAddress = null;
 			localAddress = IPAddress.Parse("127.0.0.1");
             ushort portNumber = 9998;
-
 			string sendString = "NULL";
-
             bool udpSender = false;
-
-            int  i;
-
+			int  i;
             if(args.Length < 1)
 				usage();
 			//Get local interface IP addr
 			IPAddress[] localIPs = Dns.GetHostAddresses(Dns.GetHostName());
-
 			localAddress = localIPs[0];
-
             // Parse the command line
             for (i = 0; i < args.Length; i++)
             {
-
                 try
                 {
-
                     if ((args[i][0] == '-') || (args[i][0] == '/'))
                     {
 
                         switch (Char.ToLower(args[i][1]))
                         {
-
                             case 'm':       // Multicast groups to join
-
                                 multicastGroups.Add(IPAddress.Parse(args[++i]));
-
                                 break;
 
                             case 'l':       // Local interface to bind to
 								
                                 localAddress = IPAddress.Parse(args[++i]);
-
                                 break;
 
                             case 'r':       // Indicates UDP receiver
 
-                                udpSender = false;
-
+								udpSender = false;
                                 break;
 
                             case 's':       // Indicates UDP sender as well as the destination address
 
                                 udpSender = true;
-
                                 destAddress = IPAddress.Parse(args[++i]);
-
                                 break;
 
-                            case 'f':
+                            case 'f': 		//Indicates request came from/for the front
+
                               	sendString = "Front";
-                            
 								break;
 
-                            case 'd':
-                                sendString = "Dance";
+                            case 'h':		//Indicates request came from/for Havana
 
-                                break;
-
-                            case 'h':
                                 sendString = "Havana";
-                                
 								break;
 
-							case 't':
+							case 't':		//Indicates request came from/for the front terminal
+
 								sendString = "Enterance";
-								
 								break;
 
                             default:
 
                                 usage();
-
 								return;
-
                         }
-
+			
                     }
 
                 }
-
+				 
                 catch
                 {
                     //usage();
 					return;
 
                 }
-
             }
 
 			UdpClient udpSocket = null;
@@ -157,9 +122,6 @@ namespace HelloWorld
 
                     if (localAddress.AddressFamily == AddressFamily.InterNetwork)
                     {
-
-                        
-
                         udpSocket.JoinMulticastGroup((IPAddress)multicastGroups[i]);
 
                     }
@@ -179,7 +141,6 @@ namespace HelloWorld
                 {
 
                     udpSocket.Connect(destAddress, portNumber);
-
                     Console.WriteLine("Connect() is OK...");
 
                 }
@@ -230,7 +191,7 @@ namespace HelloWorld
 						}
 						DateTime dt = DateTime.UtcNow.ToLocalTime();
 
-						Console.WriteLine("Page from {0} message from {1} at {2}",  machineName, recieveStr, dt);
+						Console.WriteLine("Page from {0}, message: {1} at {2}\n",  machineName, recieveStr, dt);
 
 
 
@@ -258,7 +219,6 @@ namespace HelloWorld
 
                 if (udpSocket != null)
                 {
-
                   
 					Console.WriteLine("Successful, cleaning up..");
 
@@ -290,7 +250,6 @@ namespace HelloWorld
 
 
                     Console.WriteLine("Success: closing the socket.");
-
                     udpSocket.Close();
 
                 }
